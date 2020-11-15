@@ -40,7 +40,7 @@ Ejercicios básicos
 
    <img src="ac_plot.png" width="640" align="center">
 
-   Para generar esta gráfica hemos creado un script (`ac_plot.py`) ubicado dentro de la carpeta scripts. En 
+   Para generar esta gráfica hemos creado un script `ac_plot.py` ubicado dentro de la carpeta scripts. En 
    este script representamos una trama de señal sonora del archivo `test_pitch.wav` y su autocorrelación. Esta 
    trama ha sido encontrada de manera manual (escuchando el audio).
 
@@ -48,27 +48,27 @@ Ejercicios básicos
      autocorrelación. Inserte a continuación el código correspondiente.
 
      ```c++
-    while(*iR > 0 && iR != r.end()){
-    ++iR;
-    }
-
-    if (iR == r.end()){
-      iRMax = r.begin() + npitch_max;
-    } else {
-
-      if (iR < r.begin() + npitch_min) {
-      iR = r.begin() + npitch_min;
+      while(*iR > 0 && iR != r.end()){
+      ++iR;
       }
 
-      iRMax = iR;
+      if (iR == r.end()){
+        iRMax = r.begin() + npitch_max;
+      } else {
 
-      while (iR != r.end()) {
-        if (*iR > *iRMax) {
-          iRMax = iR;
+        if (iR < r.begin() + npitch_min) {
+        iR = r.begin() + npitch_min;
         }
-        ++iR;
+
+        iRMax = iR;
+
+        while (iR != r.end()) {
+          if (*iR > *iRMax) {
+            iRMax = iR;
+          }
+          ++iR;
+        }
       }
-    }
      ```
 
    * Implemente la regla de decisión sonoro o sordo e inserte el código correspondiente.
@@ -80,7 +80,7 @@ Ejercicios básicos
     ///   or compute and use other ones.
     return (pot < -40.0F || r1norm <= 0.92F) && rmaxnorm <= 0.53F;
     /// \DONE Decision de sordo/sonoro implementada. Usamos pot = -40, r1norm = 0,92 y rmaxnorm = 0,53.
-  }
+    }
    ```
    Usamos la potencia de la señal, el valor de r1 normalizado y el valor de rmax normalizado. Los valores que aperecen en el código los hemos obtenido a posteriori.
 
@@ -100,7 +100,7 @@ Ejercicios básicos
 	    Recuerde configurar los paneles de datos para que el desplazamiento de ventana sea el adecuado, que
 		en esta práctica es de 15 ms.
 
-    <img src="grafica1_wavesurfer.jpg" width="640" align="center">
+    <img src="grafica1_wavesurfer.png" width="640" align="center">
 
     En esta grafica se puede observar, en este orden y de arriba a abajo, la correlación máxima normalizada, 
     la correlación en k=1 normalizada, la potencia de la señal, el valor de pitch calculado por wavesurfer y 
@@ -117,7 +117,7 @@ Ejercicios básicos
 	    su resultado con el obtenido por la mejor versión de su propio sistema.  Inserte una gráfica
 		ilustrativa del resultado de ambos detectores.
 
-    <img src="grafica2_wavesurfer.jpg" width="640" align="center">
+    <img src="grafica2_wavesurfer.png" width="640" align="center">
 
     Nuestro detector de pitch creemos que es bastante bueno. El valor del pitch que calcula es muy parecido al de wavesurfer. De todos modos, hay algunas tramas con valores "outliers".
   
