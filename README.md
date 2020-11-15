@@ -100,7 +100,9 @@ Ejercicios básicos
 	    Recuerde configurar los paneles de datos para que el desplazamiento de ventana sea el adecuado, que
 		en esta práctica es de 15 ms.
 
-    <img src="grafica1_wavesurfer.png" width="640" align="center">
+
+    <img src="grafica1_wavesurfer.png" width="800" align="center">
+
 
     En esta grafica se puede observar, en este orden y de arriba a abajo, la correlación máxima normalizada, 
     la correlación en k=1 normalizada, la potencia de la señal, el valor de pitch calculado por wavesurfer y 
@@ -117,7 +119,9 @@ Ejercicios básicos
 	    su resultado con el obtenido por la mejor versión de su propio sistema.  Inserte una gráfica
 		ilustrativa del resultado de ambos detectores.
 
-    <img src="grafica2_wavesurfer.png" width="640" align="center">
+
+    <img src="grafica2_wavesurfer.png" width="800" align="center">
+
 
     Nuestro detector de pitch creemos que es bastante bueno. El valor del pitch que calcula es muy parecido al de wavesurfer. De todos modos, hay algunas tramas con valores "outliers".
   
@@ -136,7 +140,7 @@ Ejercicios básicos
      detector de Wavesurfer. Aunque puede usarse Wavesurfer para obtener la representación, se valorará
 	 el uso de alternativas de mayor calidad (particularmente Python).
 
-   <img src="pitch_plot.png" width="640" align="center">
+   <img src="pitch_plot.png" width="800" align="center">
 
    
 
