@@ -1,6 +1,9 @@
 /// @file
 
 #include <iostream>
+#include <fstream>
+#include <errno.h>
+#include <string.h>
 #include <math.h>
 #include "pitch_analyzer.h"
 
@@ -9,11 +12,15 @@ using namespace std;
 /// Name space of UPC
 namespace upc {
   void PitchAnalyzer::autocorrelation(const vector<float> &x, vector<float> &r) const {
-
+    
     for (unsigned int l = 0; l < r.size(); ++l) {
   		/// \TODO Compute the autocorrelation r[l]
+      for(unsigned int i = 0; i < x.size()-l; ++i){
+        r[l] += x[i]*x[i+l];
+      }
+      r[l] = (1.0F/x.size())*r[l];
     }
-
+      /// \DONE Implementado el calculo de la autocorrelación.
     if (r[0] == 0.0F) //to avoid log() and divide zero 
       r[0] = 1e-10; 
   }
@@ -27,6 +34,9 @@ namespace upc {
     switch (win_type) {
     case HAMMING:
       /// \TODO Implement the Hamming window
+      for(unsigned int n = 0; n < frameLen; ++n){
+        window[n] = 0.54 - 0.46*cos(2 * M_PI * n / (frameLen -1));
+      }/// \DONE Ventana de Hamming implementada.
       break;
     case RECT:
     default:
@@ -50,7 +60,8 @@ namespace upc {
     /// \TODO Implement a rule to decide whether the sound is voiced or not.
     /// * You can use the standard features (pot, r1norm, rmaxnorm),
     ///   or compute and use other ones.
-    return true;
+    return (pot < -40.0F || r1norm <= 0.92F) && rmaxnorm <= 0.53F;
+    /// \DONE Decision de sordo/sonoro implementada. Usamos pot = -40, r1norm = 0,92 y rmaxnorm = 0,53.
   }
 
   float PitchAnalyzer::compute_pitch(vector<float> & x) const {
@@ -76,6 +87,30 @@ namespace upc {
     ///	   .
 	/// In either case, the lag should not exceed that of the minimum value of the pitch.
 
+  while(*iR > 0 && iR != r.end()){
+    ++iR;
+  }
+
+  if (iR == r.end()){
+    iRMax = r.begin() + npitch_max;
+  } else {
+
+    if (iR < r.begin() + npitch_min) {
+    iR = r.begin() + npitch_min;
+    }
+
+    iRMax = iR;
+
+    while (iR != r.end()) {
+      if (*iR > *iRMax) {
+        iRMax = iR;
+      }
+      ++iR;
+    }
+  }
+
+ /// \DONE Segundo máximo de la autocorrelación calculado.
+
     unsigned int lag = iRMax - r.begin();
 
     float pot = 10 * log10(r[0]);
@@ -83,9 +118,26 @@ namespace upc {
     //You can print these (and other) features, look at them using wavesurfer
     //Based on that, implement a rule for unvoiced
     //change to #if 1 and compile
+    
 #if 0
     if (r[0] > 0.0F)
       cout << pot << '\t' << r[1]/r[0] << '\t' << r[lag]/r[0] << endl;
+
+    ofstream os("r1norm.txt", std::ofstream::app);
+    if(!os.good()) {
+      cerr << "Error reading output file " << "r1norm.txt" << " (" << strerror(errno) << ")\n";
+      return -3;
+    }
+
+    os << r[1]/r[0] <<'\n';
+
+    ofstream os1("rmaxnorm.txt", std::ofstream::app);
+    if (!os1.good()) {
+      cerr << "Error reading output file " << "rmaxnorm.txt" << " (" << strerror(errno) << ")\n";
+      return -3;
+    }
+
+    os1 << r[lag]/r[0] <<'\n';
 #endif
     
     if (unvoiced(pot, r[1]/r[0], r[lag]/r[0]))
